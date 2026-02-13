@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقدیم به یسنا ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4b6e;
+            --bg-glass: rgba(255, 255, 255, 0.25);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Vazirmatn', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4a4a4a;
+        }
+
+        /* --- صفحه شروع --- */
+        #start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ff758c;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .heart-trigger {
+            font-size: 100px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+            animation: heartbeat 1.2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .heart-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        .click-hint {
+            margin-top: 20px;
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: pulse 2s infinite;
+        }
+
+        /* --- کارت اصلی --- */
+        .card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px;
+            width: 420px;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- تایپوگرافی --- */
+        .name-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: -webkit-linear-gradient(#ff4b6e, #ff9a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .message {
+            font-size: 1rem;
+            color: #555;
+            min-height: 60px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* --- موزیک پلیر کاستوم --- */
+        .player-wrapper {
+            background: rgba(255,255,255,0.4);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- گالری تصاویر (کروسل رمانتیک) --- */
+        .image-carousel {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(255, 75, 110, 0.3);
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(255, 75, 110, 0.8), transparent);
+            padding: 15px;
+            color: white;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .carousel-hearts {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .carousel-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            right: 10px;
+        }
+
+        .carousel-nav.next {
+            left: 10px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 75, 110, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .song-info {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .btn-control {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-control:hover {
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(255, 75, 110, 0.3);
+        }
+
+        /* نوار پیشرفت */
+        .progress-container {
+            width: 100%;
+            margin: 15px 0 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-stamps {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.7rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* اکولایزر فیک */
+        .equalizer {
+            display: flex;
+            gap: 3px;
+            height: 20px;
+            align-items: flex-end;
+            margin-top: 10px;
+            opacity: 0.5;
+        }
+        
+        .bar {
+            width: 4px;
+            background: var(--primary);
+            animation: equalize 1s infinite alternate;
+        }
+        .playing .bar { animation-play-state: running; }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        .bar:nth-child(4) { animation-delay: 0.1s; }
+        .bar:nth-child(5) { animation-delay: 0.3s; }
+
+        /* --- انیمیشن‌ها --- */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        @keyframes equalize { 0% { height: 5px; } 100% { height: 20px; } }
+        @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-100vh) rotate(360deg); } }
+
+        /* ذرات قلب پس زمینه */
+        .bg-heart {
+            position: absolute;
+            color: #fff;
+            opacity: 0.6;
+            animation: float 6s linear infinite;
+            z-index: 1;
+        }
+
+        .hidden { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+    <!-- لایه شروع (برای دور زدن محدودیت Autoplay مرورگرها) -->
+    <div id="start-overlay">
+        <div class="heart-trigger" onclick="startSurprise()">❤️</div>
+        <div class="click-hint">برای یسنا... (ضربه بزن)</div>
+    </div>
+
+    <!-- کارت اصلی -->
+    <div class="card" id="main-card">
+        <h1 class="name-title">Yasna</h1>
+        <p class="message" id="typewriter"></p>
+
+        <!-- موزیک پلیر -->
+        <div class="player-wrapper" id="player">
+           
+            <!-- گالری تصاویر رمانتیک -->
+            <div class="image-carousel">
+                <div class="carousel-container" id="carouselContainer">
+                    <!-- اسلایدها به صورت داینامیک اضافه می‌شوند -->
+                </div>
+                <button class="carousel-nav next" onclick="nextSlide()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-nav prev" onclick="prevSlide()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- نقطه‌های ناوبری -->
+            <div class="carousel-dots" id="carouselDots"></div>
+            
+           
+
+            <div class="equalizer">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+
+            <div class="progress-container" onclick="setProgress(event)">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+            </div>
+            
+            <div class="time-stamps">
+                <span id="currTime">0:00</span>
+                <span id="durTime">0:00</span>
+            </div>
+
+            <div class="controls">
+                <button class="btn-control play-btn" onclick="togglePlay()">
+                    <i class="fas fa-pause" id="playIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <audio id="audio" src="1.mp3"></audio>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const startOverlay = document.getElementById('start-overlay');
+        const mainCard = document.getElementById('main-card');
+        const player = document.getElementById('player');
+        const playIcon = document.getElementById('playIcon');
+        const progress = document.getElementById('progress');
+        const currTime = document.getElementById('currTime');
+        const durTime = document.getElementById('durTime');
+        
+        // متن تایپی
+        const text = "ولنتاین مبارک عزیزم... \n این ملودی رو با تمام قلبم برات زدم❤️";
+        let i = 0;
+
+        // تنظیمات کروسل
+        let currentSlide = 0;
+        const images = [
+            { src: '1.jpg', caption: '' },
+            { src: '2.jpg', caption: '' },
+            { src: '3.jpg', caption: '' },
+            { src: '4.jpg', caption: '' },
+            { src: '5.jpg', caption: '' }
+        ];
+
+        // ساخت اسلایدهای کروسل
+        function initCarousel() {
+            const container = document.getElementById('carouselContainer');
+            const dotsContainer = document.getElementById('carouselDots');
+            
+            images.forEach((img, index) => {
+                // ساخت اسلاید
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `
+                    <img src="${img.src}" alt="عکس ${index + 1}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ffb3c1%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22%23fff%22%3E❤️ عکس ${index + 1} ❤️%3C/text%3E%3C/svg%3E'">
+                    <div class="carousel-hearts">💕</div>
+                    <div class="carousel-overlay">${img.caption}</div>
+                `;
+                container.appendChild(slide);
+                
+                // ساخت نقطه ناوبری
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function updateCarousel() {
+            const container = document.getElementById('carouselContainer');
+            container.style.transform = `translateX(${currentSlide * 100}%)`;
+            
+            // به‌روزرسانی نقطه‌ها
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide - 1 + images.length) % images.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide + 1) % images.length;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // تغییر خودکار اسلاید
+        let autoSlide = setInterval(nextSlide, 4000);
+
+        // توقف خودکار هنگام هاور
+        document.querySelector('.image-carousel')?.addEventListener('mouseenter', () => {
+            clearInterval(autoSlide);
+        });
+
+        document.querySelector('.image-carousel')?.addEventListener('mouseleave', () => {
+            autoSlide = setInterval(nextSlide, 4000);
+        });
+
+        // شروع سورپرایز
+        function startSurprise() {
+            startOverlay.style.opacity = '0';
+            startOverlay.style.transform = 'scale(1.5)';
+            
+            setTimeout(() => {
+                startOverlay.classList.add('hidden');
+                mainCard.classList.add('active');
+                
+                // راه‌اندازی کروسل
+                initCarousel();
+                
+                // پخش موزیک
+                audio.play();
+                player.classList.add('playing');
+                
+                // شروع تایپ
+                typeWriter();
+                
+                // ساخت قلب‌های پس زمینه
+                createHearts();
+            }, 800);
+        }
+
+        // تایپ متن
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 60);
+            }
+        }
+
+        // کنترل پخش/توقف
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                player.classList.add('playing');
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                player.classList.remove('playing');
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        // آپدیت نوار پیشرفت
+        audio.addEventListener('timeupdate', () => {
+            const { duration, currentTime } = audio;
+            const percent = (currentTime / duration) * 100;
+            progress.style.width = `${percent}%`;
+            
+            currTime.innerText = formatTime(currentTime);
+            durTime.innerText = duration ? formatTime(duration) : '0:00';
+        });
+
+        // کلیک روی نوار پیشرفت
+        function setProgress(e) {
+            const width = e.target.closest('.progress-bar').clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        // فرمت زمان
+        function formatTime(time) {
+            const min = Math.floor(time / 60);
+            const sec = Math.floor(time % 60);
+            return `${min}:${sec < 10 ? '0' + sec : sec}`;
+        }
+
+        // پایان آهنگ
+        audio.addEventListener('ended', () => {
+            player.classList.remove('playing');
+            playIcon.classList.remove('fa-pause');
+            playIcon.classList.add('fa-play');
+            progress.style.width = '0%';
+        });
+
+        // قلب‌های متحرک پس زمینه
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 7000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
